@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="col-sm-4 offset-sm-4 mt-5 text-center">
+        {% if form.errors %}
+            <p class="text-danger">El usuario y contraseña no concuerdan. Intente de nuevo.</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p class="text-danger">Tu cuenta no tiene acceso a esta página. Para continuar, accede con una cuenta con acceso.</p>
+            {% else %}
+                <h4 class="mb-3">Inicie sesión</h4>
+            {% endif %}
+        {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <table class="table table-borderless">
+                    <tr>
+                        <td>{{ form.username.label_tag }}</td>
+                        <td>{{ form.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.password.label_tag }}</td>
+                        <td>{{ form.password }}</td>
+                    </tr>
+                </table>
+                <button type="submit" class="btn btn-primary">Acceder</button>
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+    </div>
+{% endblock %}
