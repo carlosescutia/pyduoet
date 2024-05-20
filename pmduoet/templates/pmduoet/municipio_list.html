@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-3">
+            <div class="col-lg-10 col-md-10 mx-auto">
+                <h1 class="fw-light">Documentación PMDUOETs</h1>
+                <p class="lead text-body-secondary">Repositorio de documentación de los proyectos de programas municipales para revisión y análisis de la congruencia y vinculación respecto a la planeación nacional y estatal, a realizarse por las dependencias y entidades de la administración pública estatal conforme a las materias de su competencia con fundamento en el artículo 58 fracción VIII inciso b del Código Territorial para el Estado y los Municipios de
+                    Guanajuato y el artículo 9 de los Lineamientos Técnicos que deberán atender los Municipios en la presentación de los proyectos de Programas Municipales de Desarrollo Urbano y Ordenamiento Ecológico Territorial para su dictamen y validación.</p>
+            </div>
+        </div>
+    </section>
+
+    {% if municipio_list %}
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    {% for municipio in municipio_list %}
+                        {% if municipio.documento_set.all %}
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    {% if municipio.img_mun %}
+                                        <img src="{{ municipio.img_mun_url }}">
+                                    {% else %}
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ municipio.nom_mun_corto }}</text></svg>
+                                    {% endif %}
+
+                                    <div class="card-body">
+                                        <p class="card-text text-center">{{ municipio.nom_mun_largo }}</p>
+                                        {% for documento in municipio.documento_set.all %}
+                                            {% if documento.archivo %}
+                                                <a href="{% get_media_prefix %}{{ documento.archivo }}" class="btn btn-sm btn-outline-secondary mb-1" target="_blank">{{ documento.etiqueta }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>No hay municipios registrados</p>
+    {% endif %}
+{% endblock %}
