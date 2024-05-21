@@ -141,10 +141,10 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # Trusted origins
 CSRF_TRUSTED_ORIGINS = ["https://iplaneg.guanajuato.gob.mx"]
 
+# Custom login url
+LOGIN_URL = 'accounts/login/'
+
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/pyduoet'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
