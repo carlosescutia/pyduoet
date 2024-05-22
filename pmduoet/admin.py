@@ -8,7 +8,8 @@ from .models import Avance
 
 @admin.register(Municipio)
 class MunicipioAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('nom_mun_corto', 'status')
+    list_filter = ('status',)
 
 @admin.register(Documento)
 class DocumentoAdmin(admin.ModelAdmin):

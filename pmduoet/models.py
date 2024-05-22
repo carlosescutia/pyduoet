@@ -9,6 +9,21 @@ class Municipio(models.Model):
     nom_mun_corto = models.CharField(max_length=50, default=None, blank=True, null=True)
     nom_mun_largo = models.CharField(max_length=200, default=None, blank=True, null=True)
     img_mun = models.ImageField(upload_to='img/img_mun', default=None, blank=True, null=True)
+    STATUS_AVANCE = (
+            ('diagnostico', 'Diagnóstico'),
+            ('elaboracion', 'Elaboración'),
+            ('dictaminacion', 'Dictaminación'),
+            ('revision', 'Revisión'),
+            ('dictaminado', 'Dictaminado'),
+            ('publicado', 'Publicado'),
+            ('pendiente', 'Pendiente'),
+            )
+    status = models.TextField(
+        max_length=20,
+        choices=STATUS_AVANCE,
+        blank=True,
+        help_text='Status del avance',
+        )
 
     @property
     def img_mun_url(self):
@@ -68,6 +83,7 @@ class Avance(models.Model):
     dictaminacion = models.DateField(default=None, null=True, blank=True)
     publicacion = models.DateField(null=True, blank=True)
     comentarios = models.TextField(max_length=200, default=None, blank=True, null=True)
+    actualizado = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         """String for representing the Avance object (in Admin site etc.)"""

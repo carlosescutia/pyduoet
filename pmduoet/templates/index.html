@@ -27,7 +27,40 @@
     <div class="col-sm-12">
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-30years" role="tabpanel" aria-labelledby="pills-30years-tab" tabindex="0">
+                <p class="text-end me-5">Ultima actualización: {{ ultima_actualizacion }}</p>
                 {% if municipio_list %}
+                    <div class="col-sm-10 offset-1">
+                        <h4 class="text-center">Programas municipales</h4>
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Municipio</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Dictaminación</th>
+                                    <th scope="col">Publicación</th>
+                                    <th scope="col">Comentarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for municipio in municipio_list %}
+                                    {% if municipio.avance_set.all %}
+                                        {% for avance in municipio.avance_set.all %}
+                                            {% if avance.tipo == 'municipal' %}
+                                            <tr>
+                                                <td>{{ avance.municipio.nom_mun_corto }}</td>
+                                                <td>{{ avance.get_status_display }}</td>
+                                                <td>{{ avance.dictaminacion|default_if_none:'' }}</td>
+                                                <td>{{ avance.publicacion|default_if_none:'' }}</td>
+                                                <td>{{ avance.comentarios }}</td>
+                                            </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="col-sm-10 offset-1 mb-5">
                         <h4 class="text-center">Programas parciales</h4>
                         <table class="table">
@@ -62,41 +95,15 @@
                         </table>
                     </div>
 
-
-                    <div class="col-sm-10 offset-1">
-                        <h4 class="text-center">Programas municipales</h4>
-                        <table class="table">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th scope="col">Municipio</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Dictaminación</th>
-                                    <th scope="col">Publicación</th>
-                                    <th scope="col">Comentarios</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for municipio in municipio_list %}
-                                    {% if municipio.avance_set.all %}
-                                        {% for avance in municipio.avance_set.all %}
-                                            {% if avance.tipo == 'municipal' %}
-                                            <tr>
-                                                <td>{{ avance.municipio.nom_mun_corto }}</td>
-                                                <td>{{ avance.get_status_display }}</td>
-                                                <td>{{ avance.dictaminacion|default_if_none:'' }}</td>
-                                                <td>{{ avance.publicacion|default_if_none:'' }}</td>
-                                                <td>{{ avance.comentarios }}</td>
-                                            </tr>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="col-sm-10 offset-1 mb-5 text-center">
+                        {% if mapa %}
+                            <img class="img-fluid" src="{{ mapa.img_mun_url }}">
+                        {% endif %}
                     </div>
                 {% else %}
                     <p>No hay avances registrados</p>
                 {% endif %}
+
             </div>
 
             <div class="tab-pane fade" id="pills-queped" role="tabpanel" aria-labelledby="pills-queped-tab" tabindex="0">
@@ -115,7 +122,10 @@
                                                 {% endif %}
 
                                                 <div class="card-body">
-                                                    <p class="card-text text-center">{{ municipio.nom_mun_largo }}</p>
+                                                    <p class="card-text text-center">
+                                                        {{ municipio.nom_mun_largo }} <br />
+                                                        <small class="text-secondary">{{ municipio.get_status_display }}</small>
+                                                    </p>
                                                     {% for documento in municipio.documento_set.all %}
                                                         {% if documento.archivo %}
                                                             <a href="{% get_media_prefix %}{{ documento.archivo }}" class="btn btn-sm btn-outline-secondary mb-1" target="_blank">{{ documento.etiqueta }}</a>
