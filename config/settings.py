@@ -145,6 +145,6 @@ CSRF_TRUSTED_ORIGINS = ["https://iplaneg.guanajuato.gob.mx"]
 LOGIN_URL = 'accounts/login/'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/pyduoet'
+LOGIN_REDIRECT_URL = '/pmduoet'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
